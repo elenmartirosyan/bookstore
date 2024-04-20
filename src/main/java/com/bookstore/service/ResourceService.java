@@ -1,7 +1,7 @@
-package com.bookstore.bookstore.service;
+package com.bookstore.service;
 
-import com.bookstore.bookstore.repository.GenreRepository;
-import com.bookstore.bookstore.service.dto.GenreDTO;
+import com.bookstore.repository.GenreRepository;
+import com.bookstore.service.dto.GenreDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

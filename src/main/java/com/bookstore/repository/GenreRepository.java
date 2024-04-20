@@ -1,6 +1,6 @@
-package com.bookstore.bookstore.repository;
+package com.bookstore.repository;
 
-import com.bookstore.bookstore.repository.entity.Genre;
+import com.bookstore.repository.entity.Genre;
 import org.springframework.data.repository.CrudRepository;
 
 /**

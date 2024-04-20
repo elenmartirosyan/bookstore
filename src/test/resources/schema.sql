@@ -15,6 +15,20 @@ CREATE TABLE public.author
 
 ALTER TABLE public.author OWNER TO postgres;
 
+CREATE SEQUENCE public.author_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.author_id_seq OWNER TO postgres;
+
+
+ALTER SEQUENCE public.author_id_seq OWNED BY public.author.id;
+
 --
 -- Name: book; Type: TABLE; Schema: public; Owner: postgres
 --

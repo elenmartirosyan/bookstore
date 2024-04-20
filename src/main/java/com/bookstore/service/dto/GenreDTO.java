@@ -1,9 +1,10 @@
-package com.bookstore.bookstore.service.dto;
+package com.bookstore.service.dto;
 
-import com.bookstore.bookstore.repository.entity.Genre;
+import com.bookstore.repository.entity.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Data transfer object for the Genre.
@@ -43,5 +44,18 @@ public class GenreDTO {
             dtos.add(mapEntityToDTO(entity));
         }
         return dtos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GenreDTO genreDTO = (GenreDTO) o;
+        return Objects.equals(id, genreDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -1,7 +1,7 @@
-package com.bookstore.bookstore.controller;
+package com.bookstore.controller;
 
-import com.bookstore.bookstore.service.ResourceService;
-import com.bookstore.bookstore.service.dto.GenreDTO;
+import com.bookstore.service.ResourceService;
+import com.bookstore.service.dto.GenreDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,5 +1,6 @@
-package com.bookstore.bookstore;
+package com.bookstore;
 
+import com.bookstore.controller.ResourceController;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
@@ -13,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Test class for {@link com.bookstore.bookstore.controller.ResourceController}.
+ * Test class for {@link ResourceController}.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.profiles.active=test")
 class ResourceControllerTest {
@@ -21,7 +22,7 @@ class ResourceControllerTest {
     TestRestTemplate restTemplate;
 
     @Test
-    void shouldReturnACashCardWhenDataIsSaved() {
+    void getAllGenresSuccessTest() {
         ResponseEntity<String> response = restTemplate
                 .getForEntity("/resources/genre", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -30,8 +31,8 @@ class ResourceControllerTest {
         JSONArray page = documentContext.read("$[*]");
         assertThat(page.size()).isEqualTo(3);
 
-        JSONArray amounts = documentContext.read("$..name");
-        assertThat(amounts).containsExactly("fiction", "novel", "mystery");
+        JSONArray names = documentContext.read("$..name");
+        assertThat(names).containsExactly("fiction", "novel", "mystery");
     }
 
 }
