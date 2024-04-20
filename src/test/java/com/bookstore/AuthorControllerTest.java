@@ -1,6 +1,7 @@
 package com.bookstore;
 
 import com.bookstore.controller.AuthorController;
+import com.bookstore.service.dto.AuthorDTO;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
@@ -8,8 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -89,5 +93,113 @@ public class AuthorControllerTest {
         ResponseEntity<String> response = restTemplate
                 .getForEntity("/author/100", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DirtiesContext
+    void createAuthorSuccessTest() {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName("name");
+        authorDTO.setSurname("surname");
+        ResponseEntity<AuthorDTO> createResponse = restTemplate
+                .postForEntity("/author", authorDTO, AuthorDTO.class);
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(createResponse.getBody()).isNotNull();
+        AuthorDTO createdAuthor = createResponse.getBody();
+
+        ResponseEntity<String> getResponse = restTemplate
+                .getForEntity("/author/" + createdAuthor.getId(), String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+        Number id = documentContext.read("$.id");
+        String name = documentContext.read("$.name");
+        String surname = documentContext.read("$.surname");
+
+        assertThat(id).isNotNull();
+        assertThat(name).isEqualTo(createdAuthor.getName());
+        assertThat(surname).isEqualTo(createdAuthor.getSurname());
+    }
+
+    @Test
+    @DirtiesContext
+    void createAuthorNoSurnameSuccessTest() {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName("name");
+        ResponseEntity<AuthorDTO> createResponse = restTemplate
+                .postForEntity("/author", authorDTO, AuthorDTO.class);
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(createResponse.getBody()).isNotNull();
+        AuthorDTO createdAuthor = createResponse.getBody();
+
+        ResponseEntity<String> getResponse = restTemplate
+                .getForEntity("/author/" + createdAuthor.getId(), String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+        Number id = documentContext.read("$.id");
+        String name = documentContext.read("$.name");
+        String surname = documentContext.read("$.surname");
+
+        assertThat(id).isNotNull();
+        assertThat(name).isEqualTo(createdAuthor.getName());
+        assertThat(surname).isNull();
+    }
+
+    @Test
+    @DirtiesContext
+    void updateAuthorSuccessTest() {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName("updatedName");
+        HttpEntity<AuthorDTO> request = new HttpEntity<>(authorDTO);
+        ResponseEntity<AuthorDTO> updateResponse = restTemplate
+                .exchange("/author/1", HttpMethod.PUT, request, AuthorDTO.class);
+        assertThat(updateResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(updateResponse.getBody()).isNotNull();
+        AuthorDTO updatedAuthor = updateResponse.getBody();
+
+        ResponseEntity<String> getResponse = restTemplate
+                .getForEntity("/author/" + updatedAuthor.getId(), String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+        Number id = documentContext.read("$.id");
+        String name = documentContext.read("$.name");
+        String surname = documentContext.read("$.surname");
+
+        assertThat(id).isNotNull();
+        assertThat(name).isEqualTo(updatedAuthor.getName());
+        assertThat(surname).isEqualTo(updatedAuthor.getSurname());
+    }
+
+    @Test
+    @DirtiesContext
+    void updateAuthorNotFoundTest() {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName("updatedName");
+        HttpEntity<AuthorDTO> request = new HttpEntity<>(authorDTO);
+        ResponseEntity<AuthorDTO> updateResponse = restTemplate
+                .exchange("/author/1000", HttpMethod.PUT, request, AuthorDTO.class);
+        assertThat(updateResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(updateResponse.getBody()).isNull();
+    }
+
+    @Test
+    @DirtiesContext
+    void deleteAuthorSuccessTest() {
+        ResponseEntity<String> getResponseBeforeDelete = restTemplate
+                .getForEntity("/author/1", String.class);
+        assertThat(getResponseBeforeDelete.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(getResponseBeforeDelete.getBody()).isNotNull();
+
+        ResponseEntity<Void> deleteResponse = restTemplate
+                .exchange("/author/1", HttpMethod.DELETE, null, Void.class);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(deleteResponse.getBody()).isNull();
+
+        ResponseEntity<String> getResponseAfterDelete = restTemplate
+                .getForEntity("/author/1", String.class);
+        assertThat(getResponseAfterDelete.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(getResponseAfterDelete.getBody()).isNull();
     }
 }
