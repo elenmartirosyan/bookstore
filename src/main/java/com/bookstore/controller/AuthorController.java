@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Class for managing {@link Author} related apis
+ * Class for managing {@link Author} related apis.
  */
 @RestController
 @RequestMapping("/author")
@@ -29,6 +29,7 @@ public class AuthorController {
     /**
      * API for getting all authors.
      *
+     * @param pageable the pageable object.
      * @return the response entity with the list of author in {@link com.bookstore.service.dto.AuthorDTO}.
      */
     @GetMapping()
@@ -102,6 +103,8 @@ public class AuthorController {
             authorService.deleteAuthor(authorId);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
     }

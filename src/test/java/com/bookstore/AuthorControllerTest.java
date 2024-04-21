@@ -188,18 +188,32 @@ public class AuthorControllerTest {
     @DirtiesContext
     void deleteAuthorSuccessTest() {
         ResponseEntity<String> getResponseBeforeDelete = restTemplate
+                .getForEntity("/author/2", String.class);
+        assertThat(getResponseBeforeDelete.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(getResponseBeforeDelete.getBody()).isNotNull();
+
+        ResponseEntity<Void> deleteResponse = restTemplate
+                .exchange("/author/2", HttpMethod.DELETE, null, Void.class);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(deleteResponse.getBody()).isNull();
+
+        ResponseEntity<String> getResponseAfterDelete = restTemplate
+                .getForEntity("/author/2", String.class);
+        assertThat(getResponseAfterDelete.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(getResponseAfterDelete.getBody()).isNull();
+    }
+
+    @Test
+    @DirtiesContext
+    void deleteAuthorNotAllowedTest() {
+        ResponseEntity<String> getResponseBeforeDelete = restTemplate
                 .getForEntity("/author/1", String.class);
         assertThat(getResponseBeforeDelete.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(getResponseBeforeDelete.getBody()).isNotNull();
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/author/1", HttpMethod.DELETE, null, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(deleteResponse.getBody()).isNull();
-
-        ResponseEntity<String> getResponseAfterDelete = restTemplate
-                .getForEntity("/author/1", String.class);
-        assertThat(getResponseAfterDelete.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-        assertThat(getResponseAfterDelete.getBody()).isNull();
     }
 }

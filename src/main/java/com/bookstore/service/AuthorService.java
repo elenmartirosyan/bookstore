@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service layer for the {@link com.bookstore.repository.entity.Author}
+ * Service layer for the {@link Author}
  */
 @Service
 public class AuthorService {

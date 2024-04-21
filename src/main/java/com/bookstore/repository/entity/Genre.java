@@ -16,7 +16,7 @@ public class Genre {
     @Id
     @Column(name = "id")
     private Integer id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     public Integer getId() {

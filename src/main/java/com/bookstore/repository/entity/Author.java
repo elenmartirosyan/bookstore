@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 /**
- * Entity class representing a Author table.
+ * Entity class representing Author table.
  */
 @Entity
 @Table(name = "author")
@@ -15,7 +15,7 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_seq")
     @Column(name = "id")
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "surname")
     private String surname;

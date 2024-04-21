@@ -48,7 +48,7 @@ public class AuthorDTO {
     public static AuthorDTO mapEntityToDTO(final Author entity) {
         if (entity == null)
             return null;
-        AuthorDTO dto = new AuthorDTO();
+        final AuthorDTO dto = new AuthorDTO();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setSurname(entity.getSurname());
@@ -57,7 +57,10 @@ public class AuthorDTO {
 
     @NonNull
     public static List<AuthorDTO> mapEntitiesToDTOs(final Iterable<Author> entities) {
-        List<AuthorDTO> dtos = new ArrayList<>();
+        if (entities == null) {
+            return new ArrayList<>();
+        }
+        final List<AuthorDTO> dtos = new ArrayList<>();
         for (Author entity : entities) {
             dtos.add(mapEntityToDTO(entity));
         }
@@ -68,18 +71,29 @@ public class AuthorDTO {
     public static Author mapDTOToEntity(final AuthorDTO dto) {
         if (dto == null)
             return null;
-        Author entity = new Author();
+        final Author entity = new Author();
         entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setSurname(dto.getSurname());
         return entity;
     }
 
+    @NonNull
+    public static List<Author> mapDTOsToEntities(final Iterable<AuthorDTO> dtos) {
+        if (dtos == null)
+            return new ArrayList<>();
+        final List<Author> entities = new ArrayList<>();
+        for (AuthorDTO dto : dtos) {
+            entities.add(mapDTOToEntity(dto));
+        }
+        return entities;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AuthorDTO authorDTO = (AuthorDTO) o;
+        final AuthorDTO authorDTO = (AuthorDTO) o;
         return Objects.equals(id, authorDTO.id);
     }
 

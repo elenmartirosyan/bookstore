@@ -1,6 +1,8 @@
 package com.bookstore.service.dto;
 
 import com.bookstore.repository.entity.Genre;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +31,48 @@ public class GenreDTO {
         this.name = name;
     }
 
+    @Nullable
     public static GenreDTO mapEntityToDTO(final Genre entity) {
         if (entity == null)
             return null;
-        GenreDTO dto = new GenreDTO();
+        final GenreDTO dto = new GenreDTO();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         return dto;
     }
 
+    @NonNull
     public static List<GenreDTO> mapEntitiesToDTOs(final Iterable<Genre> entities) {
-        List<GenreDTO> dtos = new ArrayList<>();
+        if (entities == null) {
+            return new ArrayList<>();
+        }
+        final List<GenreDTO> dtos = new ArrayList<>();
         for (Genre entity : entities) {
             dtos.add(mapEntityToDTO(entity));
         }
         return dtos;
+    }
+
+    @Nullable
+    public static Genre mapDTOToEntity(final GenreDTO dto) {
+        if (dto == null)
+            return null;
+        final Genre entity = new Genre();
+        entity.setId(dto.getId());
+        entity.setName(dto.getName());
+        return entity;
+    }
+
+    @NonNull
+    public static List<Genre> mapDTOsToEntities(final Iterable<GenreDTO> dtos) {
+        if (dtos == null) {
+            return new ArrayList<>();
+        }
+        final List<Genre> entities = new ArrayList<>();
+        for (GenreDTO dto : dtos) {
+            entities.add(mapDTOToEntity(dto));
+        }
+        return entities;
     }
 
     @Override
