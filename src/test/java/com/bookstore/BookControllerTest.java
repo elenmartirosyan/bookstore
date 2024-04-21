@@ -60,6 +60,54 @@ class BookControllerTest {
     }
 
     @Test
+    void getAllBooksPaginatedSearchWithTitleSuccessTest() {
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/book?title=it&page=0&size=1&sort=id,desc", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        JSONArray page = documentContext.read("$[*]");
+        assertThat(page.size()).isEqualTo(1);
+
+        JSONArray ids = documentContext.read("$[*].id");
+        assertThat(ids).containsExactly(2);
+
+        JSONArray titles = documentContext.read("$..title");
+        assertThat(titles).containsExactly("It");
+    }
+
+    @Test
+    void getAllBooksPaginatedSearchWithAuthorSuccessTest() {
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/book?authorIds=1&page=0&size=1&sort=id,desc", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        JSONArray page = documentContext.read("$[*]");
+        assertThat(page.size()).isEqualTo(1);
+
+        JSONArray ids = documentContext.read("$[*].id");
+        assertThat(ids).containsExactly(2);
+
+        JSONArray titles = documentContext.read("$..title");
+        assertThat(titles).containsExactly("It");
+    }
+
+    @Test
+    void getAllBooksPaginatedSearchWithGenreSuccessTest() {
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/book?genreIds=3&page=0&size=1&sort=id,desc", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        JSONArray page = documentContext.read("$[*]");
+        assertThat(page.size()).isEqualTo(1);
+
+        JSONArray ids = documentContext.read("$[*].id");
+        assertThat(ids).containsExactly(1);
+
+        JSONArray titles = documentContext.read("$..title");
+        assertThat(titles).containsExactly("The Da Vinci Code");
+    }
+
+    @Test
     void getBookByIdSuccessTest() {
         ResponseEntity<String> response = restTemplate
                 .getForEntity("/book/2", String.class);

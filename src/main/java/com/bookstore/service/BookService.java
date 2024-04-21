@@ -5,6 +5,7 @@ import com.bookstore.repository.BookRepository;
 import com.bookstore.repository.entity.Book;
 import com.bookstore.service.dto.AuthorDTO;
 import com.bookstore.service.dto.BookDTO;
+import com.bookstore.service.dto.BookSearchDTO;
 import com.bookstore.service.dto.GenreDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
@@ -43,8 +44,10 @@ public class BookService {
      * @param pageable the pageable object.
      * @return the list of {@link BookDTO}.
      */
-    public List<BookDTO> getAllBooks(@NonNull final Pageable pageable) {
-        return BookDTO.mapEntitiesToDTOs(bookRepository.findAll(pageable).getContent());
+    public List<BookDTO> getAllBooks(@NonNull final BookSearchDTO bookSearchDTO, @NonNull final Pageable pageable) {
+        final String title = bookSearchDTO.getTitle() == null ? "" : bookSearchDTO.getTitle();
+        return BookDTO.mapEntitiesToDTOs(bookRepository.findAll(title, bookSearchDTO.getAuthorIds(),
+                bookSearchDTO.getGenreIds(), pageable).getContent());
     }
 
     /**

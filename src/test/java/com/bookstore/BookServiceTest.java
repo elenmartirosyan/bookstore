@@ -5,6 +5,7 @@ import com.bookstore.repository.BookRepository;
 import com.bookstore.repository.entity.Book;
 import com.bookstore.service.BookService;
 import com.bookstore.service.dto.BookDTO;
+import com.bookstore.service.dto.BookSearchDTO;
 import com.bookstore.service.dto.GenreDTO;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,13 +67,14 @@ class BookServiceTest {
 
     @Test
     void getAllBooksSuccessTest() {
+        final BookSearchDTO bookSearchDTO = new BookSearchDTO();
         final PageRequest pageable = PageRequest.of(0, 1);
         reset(bookRepository);
         final Book book = new Book();
         final Page<Book> page = new PageImpl<>(List.of(book), pageable, 0);
         expect(bookRepository.findAll(pageable)).andReturn(page);
         replay(bookRepository);
-        final List<BookDTO> response = bookService.getAllBooks(pageable);
+        final List<BookDTO> response = bookService.getAllBooks(bookSearchDTO, pageable);
         verify(bookRepository);
         assertThat(response).isEqualTo(BookDTO.mapEntitiesToDTOs(List.of(book)));
     }

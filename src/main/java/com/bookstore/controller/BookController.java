@@ -4,6 +4,7 @@ import com.bookstore.exception.NotFoundException;
 import com.bookstore.repository.entity.Book;
 import com.bookstore.service.BookService;
 import com.bookstore.service.dto.BookDTO;
+import com.bookstore.service.dto.BookSearchDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -46,14 +47,14 @@ public class BookController {
      * @return the response entity of the requested book in {@link BookDTO}.
      */
     @GetMapping()
-    public ResponseEntity<List<BookDTO>> getAllBooks(Pageable pageable) {
+    public ResponseEntity<List<BookDTO>> getAllBooks(BookSearchDTO bookSearchDTO, Pageable pageable) {
         final Pageable pageRequest = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 pageable.getSortOr(Sort.by(Sort.Direction.ASC, "id"))
         );
 
-        return ResponseEntity.ok(bookService.getAllBooks(pageRequest));
+        return ResponseEntity.ok(bookService.getAllBooks(bookSearchDTO, pageRequest));
     }
 
     /**
