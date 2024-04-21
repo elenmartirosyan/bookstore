@@ -72,7 +72,7 @@ class BookServiceTest {
         reset(bookRepository);
         final Book book = new Book();
         final Page<Book> page = new PageImpl<>(List.of(book), pageable, 0);
-        expect(bookRepository.findAll(pageable)).andReturn(page);
+        expect(bookRepository.findAll("", null, null, pageable)).andReturn(page);
         replay(bookRepository);
         final List<BookDTO> response = bookService.getAllBooks(bookSearchDTO, pageable);
         verify(bookRepository);
