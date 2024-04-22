@@ -1,0 +1,102 @@
+--Insert into GENRE
+INSERT INTO GENRE(ID, NAME)
+VALUES (1, 'fiction');
+INSERT INTO GENRE(ID, NAME)
+VALUES (2, 'novel');
+INSERT INTO GENRE(ID, NAME)
+VALUES (3, 'history');
+INSERT INTO GENRE(ID, NAME)
+VALUES (4, 'mystery');
+INSERT INTO GENRE(ID, NAME)
+VALUES (5, 'thriller');
+INSERT INTO GENRE(ID, NAME)
+VALUES (6, 'fantasy');
+INSERT INTO GENRE(ID, NAME)
+VALUES (7, 'comedy');
+INSERT INTO GENRE(ID, NAME)
+VALUES (8, 'drama');
+INSERT INTO GENRE(ID, NAME)
+VALUES (9, 'poetry');
+INSERT INTO GENRE(ID, NAME)
+VALUES (10, 'Fairy tale');
+
+--Insert into AUTHOR
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'Stephen', 'King');
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'Nicolas', 'Sparks');
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'Dan', 'Brown');
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'Lewis', null);
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'Paulo', 'Coelho');
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'James', 'Patterson');
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'William', 'Shakespeare');
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'William', 'Saroyan');
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'Charles', 'Dickens');
+INSERT INTO AUTHOR(ID, NAME, SURNAME)
+VALUES (nextval('public.author_id_seq'), 'Ernest', 'Hemingway');
+
+--Insert into BOOKS
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'The Da Vinci Code', null, 98.9, 2003, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'It', null, 95.9, 1986, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'The Alchemist',
+        'The Alchemist follows the story of a young Andalusian shepherd, ' ||
+        'who travels to the pyramids of Egypt to find a treasure he has recurrently dreamed about.', 100.0, 1988,
+        NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'Manual of the Warrior of Light', null, 101.0, 1997, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'The Human Comedy', null, 104.4, 1943, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'My Name is Aram', null, 101.1, 1940, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'The Old Man and the Sea', null, null, 1952, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'The Sun Also Rises', null, null, null, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'Hamlet', null, 103.0, 1623, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'Romeo and Juliet', null, 111.9, 1597, NOW());
+INSERT INTO BOOK(ID, TITLE, DESCRIPTION, PRICE, YEAR, CREATION_DATE)
+VALUES (nextval('public.book_id_seq'), 'unknown', null, null, null, NOW());
+
+--Insert into book_author
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (1, 3);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (1, 4);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (2, 1);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (3, 5);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (4, 5);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (5, 8);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (6, 8);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (7, 10);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (8, 10);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (9, 7);
+INSERT INTO BOOK_AUTHOR(BOOK_ID, AUTHOR_ID)VALUES (10, 7);
+
+--Insert into book_genre
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (1, 2);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (1, 3);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (2, 2);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (3, 2);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (3, 6);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (3, 8);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (4, 1);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (5, 2);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (5, 7);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (6, 1);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (8, 1);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (8, 2);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (8, 8);
+INSERT INTO BOOK_GENRE(BOOK_ID, GENRE_ID)VALUES (9, 8);
+
+INSERT INTO users(ID, USERNAME, PASSWORD, ROLE) VALUES(1, 'user', '$2y$10$xl5vWR39pkpykUeM4FLCqO2ZFqCeGR/1xPtwB2qxtNoxYyEa9.LAa', 'USER'); --user_pass
+INSERT INTO users(ID, USERNAME, PASSWORD, ROLE) VALUES(2, 'admin', '$2y$10$Kis05aeeKQCoqAHZeP6CRuumoo5y6vL1wKxvPEnS//F40kT3Hz0yG', 'ADMIN'); -- admin_pass

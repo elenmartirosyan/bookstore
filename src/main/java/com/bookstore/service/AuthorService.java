@@ -35,6 +35,15 @@ public class AuthorService {
     }
 
     /**
+     * Method to get authors count.
+     *
+     * @return the count of authors.
+     */
+    public Long getAuthorsCount() {
+        return authorRepository.count();
+    }
+
+    /**
      * Method to get the author by the given Id.
      *
      * @param id the id of the author to get.

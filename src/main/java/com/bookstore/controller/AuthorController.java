@@ -32,7 +32,7 @@ public class AuthorController {
      * API for getting all authors.
      *
      * @param pageable the pageable object.
-     * @return the response entity with the list of author in {@link com.bookstore.service.dto.AuthorDTO}.
+     * @return the response entity with the list of authors in {@link com.bookstore.service.dto.AuthorDTO}.
      */
     @GetMapping()
     public ResponseEntity<List<AuthorDTO>> getAllAuthors(Pageable pageable) {
@@ -43,6 +43,16 @@ public class AuthorController {
         );
 
         return ResponseEntity.ok(authorService.getAllAuthors(pageRequest));
+    }
+
+    /**
+     * API for getting all authors count.
+     *
+     * @return the response entity with the count of authors.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> getAuthorsCount() {
+        return ResponseEntity.ok(authorService.getAuthorsCount());
     }
 
     /**

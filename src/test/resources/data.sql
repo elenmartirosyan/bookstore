@@ -29,3 +29,4 @@ VALUES (nextval('public.book_id_seq'), 'unknown', null, null, null, NOW());
 
 INSERT INTO USERS(ID, USERNAME, PASSWORD, ROLE) VALUES(1, 'admin' ,'$2y$10$588re1Ynf1OkVjsoyDbKMOAifc0txhx7omh87jDuf8BirWlnmOoGi', 'ADMIN');
 INSERT INTO USERS(ID, USERNAME, PASSWORD, ROLE) VALUES(2, 'user', '$2y$10$thvBolpbhUcdVqbU0/rDN.RWYrO1zz4c9fqD0fzKM8.8wKyq9ElCS', 'USER')
+
