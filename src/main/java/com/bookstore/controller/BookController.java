@@ -5,11 +5,13 @@ import com.bookstore.repository.entity.Book;
 import com.bookstore.service.BookService;
 import com.bookstore.service.dto.BookDTO;
 import com.bookstore.service.dto.BookSearchDTO;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,6 +45,7 @@ public class BookController {
     /**
      * API for getting all books.
      *
+     * @param bookSearchDTO dto object for search.
      * @param pageable the pageable object.
      * @return the response entity of the requested book in {@link BookDTO}.
      */
@@ -58,13 +61,25 @@ public class BookController {
     }
 
     /**
+     * API for getting the books count.
+     *
+     * @param bookSearchDTO dto object for search.
+     * @return the response entity with the count of books.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> getBooksCount(BookSearchDTO bookSearchDTO) {
+        return ResponseEntity.ok(bookService.getBooksCount(bookSearchDTO));
+    }
+
+    /**
      * API for creating a book with the given details.
      *
      * @param bookRequestDTO the request dto.
      * @return the newly created book dto in {@link BookDTO}.
      */
     @PostMapping
-    public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookRequestDTO) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<BookDTO> createBook(@RequestBody @Valid BookDTO bookRequestDTO) {
         if (bookRequestDTO == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -86,7 +101,8 @@ public class BookController {
      * @return the updated book dto in {@link BookDTO}.
      */
     @PutMapping("/{bookId}")
-    private ResponseEntity<BookDTO> updateBook(@PathVariable Long bookId, @RequestBody BookDTO bookRequestDTO) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<BookDTO> updateBook(@PathVariable Long bookId, @RequestBody @Valid BookDTO bookRequestDTO) {
         final BookDTO updated;
         try {
             updated = bookService.updateBook(bookId, bookRequestDTO);
@@ -107,7 +123,8 @@ public class BookController {
      * @return the ResponseEntity.
      */
     @DeleteMapping("/{bookId}")
-    private ResponseEntity<String> deleteBook(@PathVariable Long bookId) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteBook(@PathVariable Long bookId) {
         try {
             bookService.deleteBook(bookId);
         } catch (NotFoundException e) {

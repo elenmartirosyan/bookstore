@@ -15,19 +15,26 @@ CREATE TABLE public.author
 
 ALTER TABLE public.author OWNER TO postgres;
 
+--
+-- Name: author_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
 CREATE SEQUENCE public.author_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+    NO MAXVALUE CACHE 1;
 
 
 ALTER TABLE public.author_id_seq OWNER TO postgres;
 
+--
+-- Name: author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
 
 ALTER SEQUENCE public.author_id_seq OWNED BY public.author.id;
+
 
 --
 -- Name: book; Type: TABLE; Schema: public; Owner: postgres
@@ -45,20 +52,6 @@ CREATE TABLE public.book
 
 
 ALTER TABLE public.book OWNER TO postgres;
-
-CREATE SEQUENCE public.book_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.book_id_seq OWNER TO postgres;
-
-
-ALTER SEQUENCE public.book_id_seq OWNED BY public.book.id;
 
 --
 -- Name: book_author; Type: TABLE; Schema: public; Owner: postgres
@@ -87,6 +80,27 @@ CREATE TABLE public.book_genre
 ALTER TABLE public.book_genre OWNER TO postgres;
 
 --
+-- Name: book_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.book_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE CACHE 1;
+
+
+ALTER TABLE public.book_id_seq OWNER TO postgres;
+
+--
+-- Name: book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.book_id_seq OWNED BY public.book.id;
+
+
+--
 -- Name: genre; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -98,6 +112,22 @@ CREATE TABLE public.genre
 
 
 ALTER TABLE public.genre OWNER TO postgres;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users
+(
+    id       integer           NOT NULL,
+    username character varying NOT NULL,
+    password character varying NOT NULL,
+    role     character varying NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
 
 --
 -- Name: author pk_author; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -121,6 +151,22 @@ ALTER TABLE ONLY public.book
 
 ALTER TABLE ONLY public.genre
     ADD CONSTRAINT pk_genre PRIMARY KEY (id);
+
+
+--
+-- Name: users pk_users; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT pk_users PRIMARY KEY (id);
+
+
+--
+-- Name: users unique_username; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
 
 
 --
@@ -152,6 +198,20 @@ CREATE INDEX fki_fk_bookgenre_genre ON public.book_genre USING btree (genre_id);
 
 
 --
+-- Name: idx_title; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_title ON public.book USING btree (title);
+
+
+--
+-- Name: idx_username; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_username ON public.users USING btree (username);
+
+
+--
 -- Name: book_author fk_bookauthor_author; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -180,9 +240,4 @@ ALTER TABLE ONLY public.book_genre
 --
 
 ALTER TABLE ONLY public.book_genre
-    ADD CONSTRAINT fk_bookgenre_genre FOREIGN KEY (genre_id) REFERENCES public.genre(id) NOT VALID;
-
-
---
--- PostgreSQL database dump complete
---
+    ADD CONSTRAINT fk_bookgenre_genre FOREIGN KEY (genre_id) REFERENCES public.genre(id) NOT VALID;--

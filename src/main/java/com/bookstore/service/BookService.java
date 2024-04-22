@@ -51,6 +51,18 @@ public class BookService {
     }
 
     /**
+     * Method to get the books count.
+     *
+     * @param bookSearchDTO dto object for search.
+     * @return the books count.
+     */
+    public Long getBooksCount(@NonNull final BookSearchDTO bookSearchDTO) {
+        final String title = bookSearchDTO.getTitle() == null ? "" : bookSearchDTO.getTitle();
+        return bookRepository.count(title, bookSearchDTO.getAuthorIds(),
+                bookSearchDTO.getGenreIds());
+    }
+
+    /**
      * Method to save book with the given details.
      *
      * @param bookRequestDTO the request dto.

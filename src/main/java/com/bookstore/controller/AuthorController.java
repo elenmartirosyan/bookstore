@@ -4,11 +4,13 @@ import com.bookstore.exception.NotFoundException;
 import com.bookstore.repository.entity.Author;
 import com.bookstore.service.AuthorService;
 import com.bookstore.service.dto.AuthorDTO;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,7 +66,8 @@ public class AuthorController {
      * @return the newly created author dto in {@link AuthorDTO}.
      */
     @PostMapping
-    public ResponseEntity<AuthorDTO> createAuthor(@RequestBody AuthorDTO authorRequestDTO) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<AuthorDTO> createAuthor(@RequestBody @Valid AuthorDTO authorRequestDTO) {
         if (authorRequestDTO == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -82,7 +85,8 @@ public class AuthorController {
      * @return the updated author dto in {@link AuthorDTO}.
      */
     @PutMapping("/{authorId}")
-    private ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long authorId, @RequestBody AuthorDTO authorRequestDTO) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long authorId, @RequestBody @Valid AuthorDTO authorRequestDTO) {
         final AuthorDTO updated = authorService.updateAuthor(authorId, authorRequestDTO);
         if (updated == null) {
             return ResponseEntity.notFound().build();
@@ -98,7 +102,8 @@ public class AuthorController {
      * @return the ResponseEntity.
      */
     @DeleteMapping("/{authorId}")
-    private ResponseEntity<String> deleteAuthor(@PathVariable Long authorId) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteAuthor(@PathVariable Long authorId) {
         try {
             authorService.deleteAuthor(authorId);
         } catch (NotFoundException e) {

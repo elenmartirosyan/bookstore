@@ -14,10 +14,17 @@ import java.util.List;
  * Repository for the {@link Book} entity.
  */
 public interface BookRepository extends CrudRepository<Book, Long>, PagingAndSortingRepository<Book, Long> {
-    @Query("select b from Book b left join b.listOfAuthors a left join b.listOfGenres g " +
+    @Query("select distinct b from Book b left join b.listOfAuthors a left join b.listOfGenres g " +
             " where (:title = '' or (lower(b.title) like concat('%',lower(:title),'%'))) " +
             " AND (COALESCE(:authorIds, NULL) IS NULL OR  a.id in (:authorIds))" +
             " AND (COALESCE(:genreIds, NULL) IS NULL OR  g.id in (:genreIds))")
     Page<Book> findAll(@Param("title") String title, @Param("authorIds") List<Long> authorIds,
                        @Param("genreIds") List<Integer> genreIds, Pageable pageable);
+
+    @Query("select count(distinct(b.id)) from Book b left join b.listOfAuthors a left join b.listOfGenres g " +
+            " where (:title = '' or (lower(b.title) like concat('%',lower(:title),'%'))) " +
+            " AND (COALESCE(:authorIds, NULL) IS NULL OR  a.id in (:authorIds))" +
+            " AND (COALESCE(:genreIds, NULL) IS NULL OR  g.id in (:genreIds))")
+    Long count(@Param("title") String title, @Param("authorIds") List<Long> authorIds,
+               @Param("genreIds") List<Integer> genreIds);
 }
